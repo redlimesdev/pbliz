@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pbliz! — Mobile App Developer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --lime: #C8E650;
+      --lime-dark: #a8c230;
+      --ink: #111410;
+      --paper: #F5F3ED;
+      --muted: #6B6A62;
+      --border: #D8D5CB;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: 'DM Mono', monospace;
+      font-weight: 300;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── NOISE TEXTURE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.035;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+      z-index: 1000;
+    }
+
+    /* ── HEADER ── */
+    header {
+      padding: 2rem 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      animation: fadeDown 0.6s ease both;
+    }
+
+    .logo {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .logo-name {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2rem;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      color: var(--ink);
+    }
+
+    .logo-name span {
+      color: var(--lime-dark);
+    }
+
+    .logo-sub {
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .badge {
+      background: var(--lime);
+      color: var(--ink);
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.4rem 0.9rem;
+      border-radius: 2px;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      min-height: 60vh;
+    }
+
+    .hero-left {
+      padding: 5rem 3rem 5rem 3rem;
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      animation: fadeUp 0.8s 0.1s ease both;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2.8rem, 5vw, 4.5rem);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin-bottom: 2rem;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--lime-dark);
+    }
+
+    .hero-body {
+      font-size: 0.85rem;
+      line-height: 1.8;
+      color: var(--muted);
+      max-width: 38ch;
+    }
+
+    .hero-right {
+      padding: 5rem 3rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 2.5rem;
+      animation: fadeUp 0.8s 0.25s ease both;
+    }
+
+    .stat-block {
+      border-left: 3px solid var(--lime);
+      padding-left: 1.25rem;
+    }
+
+    .stat-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.3rem;
+    }
+
+    .stat-value {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.2rem;
+      color: var(--ink);
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── SERVICES ── */
+    .services {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-top: 1px solid var(--border);
+    }
+
+    .service-item {
+      padding: 3rem;
+      border-right: 1px solid var(--border);
+      animation: fadeUp 0.8s ease both;
+    }
+
+    .service-item:last-child { border-right: none; }
+
+    .service-num {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      color: var(--lime-dark);
+      margin-bottom: 1rem;
+    }
+
+    .service-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.3rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .service-desc {
+      font-size: 0.78rem;
+      line-height: 1.75;
+      color: var(--muted);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2.5rem 3rem;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 2rem;
+      animation: fadeUp 0.8s 0.3s ease both;
+    }
+
+    .footer-company {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .footer-name {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1rem;
+    }
+
+    .footer-detail {
+      font-size: 0.65rem;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+      line-height: 1.7;
+    }
+
+    .footer-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .lime-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--lime);
+      animation: pulse 2.5s ease-in-out infinite;
+    }
+
+    .footer-tagline {
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .footer-contact {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.35rem;
+    }
+
+    .footer-contact a {
+      font-size: 0.78rem;
+      color: var(--ink);
+      text-decoration: none;
+      border-bottom: 1px solid var(--lime);
+      padding-bottom: 1px;
+      transition: color 0.2s;
+    }
+
+    .footer-contact a:hover { color: var(--lime-dark); }
+
+    .footer-kvk {
+      font-size: 0.62rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50%       { transform: scale(1.4); opacity: 0.6; }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      header { padding: 1.5rem; }
+
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-left {
+        padding: 3rem 1.5rem 2rem;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .hero-right {
+        padding: 2rem 1.5rem 3rem;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+      }
+
+      .stat-block { flex: 1 1 calc(50% - 1rem); }
+
+      .services {
+        grid-template-columns: 1fr;
+      }
+
+      .service-item {
+        padding: 2rem 1.5rem;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+
+      footer {
+        grid-template-columns: 1fr;
+        padding: 2rem 1.5rem;
+        text-align: center;
+      }
+
+      .footer-contact { align-items: center; }
+      .footer-center { order: -1; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">
+      <div class="logo-name">Pbliz<span>!</span></div>
+      <div class="logo-sub">Red Limes Dev</div>
+    </div>
+    <div class="badge">Mobile App Developer</div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-left">
+      <div class="hero-eyebrow">Independent Software Studio</div>
+      <h1 class="hero-title">
+        Apps built<br>for <em>real</em><br>people.
+      </h1>
+      <p class="hero-body">
+        Pbliz! is an independent mobile app development studio based in the Netherlands. We design and develop focused, purposeful applications for iOS and Android.
+      </p>
+    </div>
+    <div class="hero-right">
+      <div class="stat-block">
+        <div class="stat-label">Studio type</div>
+        <div class="stat-value">Independent</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-label">Platform</div>
+        <div class="stat-value">iOS &amp; Android</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-label">Location</div>
+        <div class="stat-value">Uithoorn, NL</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-label">Legal form</div>
+        <div class="stat-value">BV (Ltd.)</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section class="services">
+    <div class="service-item">
+      <div class="service-num">01</div>
+      <div class="service-title">App Development</div>
+      <p class="service-desc">Building native and cross-platform mobile applications for iOS and Android, from concept through App Store release.</p>
+    </div>
+    <div class="service-item">
+      <div class="service-num">02</div>
+      <div class="service-title">Product Design</div>
+      <p class="service-desc">Crafting focused user experiences with clear purpose — no bloat, no noise, just apps that work the way people think.</p>
+    </div>
+    <div class="service-item">
+      <div class="service-num">03</div>
+      <div class="service-title">App Publishing</div>
+      <p class="service-desc">End-to-end management of App Store and Google Play submissions, compliance, updates, and release cycles.</p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-company">
+      <div class="footer-name">Pbliz! B.V.</div>
+      <div class="footer-detail">
+        Trade name: Red Limes Dev<br>
+        Molenlaan 11E, Uithoorn<br>
+        The Netherlands<br>
+        KvK: 50254758
+      </div>
+    </div>
+    <div class="footer-center">
+      <div class="lime-dot"></div>
+      <div class="footer-tagline">Est. Netherlands</div>
+    </div>
+    <div class="footer-contact">
+      <a href="mailto:pbliz@proton.me">pbliz@proton.me</a>
+      <div class="footer-kvk">© 2025 Pbliz! B.V. — All rights reserved</div>
+    </div>
+  </footer>
+
+</body>
+</html>
